@@ -2,7 +2,9 @@
 
 [chrome-webstore-upload](https://github.com/DrewML/chrome-webstore-upload) uses the Chrome Web Store API. 
 
-Here's how to get its 3 access keys: `clientId`, `clientSecret`, `refreshToken`
+Here's how to get its 2 access keys: `clientId`, `refreshToken`
+
+Version below v2 used `clientSecret`, but this is no longer used, as long as you create a "Chrome App" OAuth.
 
 *Note:* the names you enter here don't really matter. This will take approximately 10 minutes and Google likes to change these screens often. Sorry.
 
@@ -27,13 +29,14 @@ Here's how to get its 3 access keys: `clientId`, `clientSecret`, `refreshToken`
 0. Visit https://console.developers.google.com/apis/credentials
 0. Click **Create credentials** > **OAuth client ID**:
 
-	<img width="771" alt="Create credentials" src="https://user-images.githubusercontent.com/1402241/77865679-e89f3a00-722f-11ea-942d-5245091f22b8.png">
+	> <img width="771" alt="Create credentials" src="https://user-images.githubusercontent.com/1402241/77865679-e89f3a00-722f-11ea-942d-5245091f22b8.png">
 
-0. Select **Desktop app** (or **Other**), enter `chrome-webstore-upload` and click **Create** 
+0. Select **Chrome app**, enter `Chrome Webstore Upload`, your extension’s ID, and click **Create** 
 
-	> <img width="536" alt="Configure client type" src="https://user-images.githubusercontent.com/1402241/106213276-f1cf9f00-6191-11eb-99a9-a5c4bcaaa350.png">
+	> <img width="547" alt="Create OAuth client ID" src="https://user-images.githubusercontent.com/1402241/106205904-de6a0700-6184-11eb-8591-984e69c5e82a.png">
 
-0. Save your ✅ `clientId` and ✅ `clientSecret`, these are 2 of the required 3 keys
+
+0. Save your ✅ `clientId` and ignore the `clientSecret`; `clientId` is 1 of the 2 keys you will need
 0. Visit https://console.cloud.google.com/apis/credentials/consent
 0. Click **PUBLISH APP** and confirm
 
@@ -42,7 +45,7 @@ Here's how to get its 3 access keys: `clientId`, `clientSecret`, `refreshToken`
 
 0. Place your `clientId` in this URL and open it:
 
-	`https://accounts.google.com/o/oauth2/auth?client_id=YOUR_CLIENT_ID&response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&redirect_uri=urn:ietf:wg:oauth:2.0:oob`
+	`https://accounts.google.com/o/oauth2/auth?client_id=YOUR_CLIENT_ID&response_type=code&scope=https://www.googleapis.com/auth/chromewebstore&redirect_uri=urn:ietf:wg:oauth:2.0:oob&access_type=offline&approval_prompt=force`
 
 0. Follow its steps and warnings (this is your own personal app)
 0. Wait on this page:
@@ -57,7 +60,6 @@ Here's how to get its 3 access keys: `clientId`, `clientSecret`, `refreshToken`
     method: "POST",
     body: new URLSearchParams([
       ['client_id', prompt('Enter your clientId')],
-      ['client_secret', prompt('Enter your clientSecret')],
       ['code', new URLSearchParams(location.search).get('approvalCode')],
       ['grant_type', 'authorization_code'],
       ['redirect_uri', 'urn:ietf:wg:oauth:2.0:oob']
@@ -80,4 +82,4 @@ Here's how to get its 3 access keys: `clientId`, `clientSecret`, `refreshToken`
 })();
 ```
 
-9001. Done. Now you should have ✅ `clientId`, ✅ `clientSecret` and ✅ `refreshToken`. You can use these for all your extensions, but don't share them!
+9001. Done. Now you should have ✅ `clientId` and ✅ `refreshToken`. You can use these for all your extensions, but don't share them!
